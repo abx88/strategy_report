@@ -8,9 +8,9 @@ import pandas as pd
 import numpy as np
 import datetime as dt
 #import matplotlib.pyplot as plt
-import librerie.importazioni as imp
-import librerie.stagionalità as stg
-import librerie.pattern as pt
+#import librerie.importazioni as imp
+#import librerie.stagionalità as stg
+#import librerie.pattern as pt
 import librerie.backtest as bt
 import librerie.calcolivari as clc
 import plotly.graph_objects as go
