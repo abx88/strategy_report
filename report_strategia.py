@@ -297,12 +297,12 @@ elif pagina=='Montecarlo':
         #matrix_of_drawdowns.to_csv('matrix_of_drawdowns.csv', sep=',', decimal='.', index=False)
 
         worst_drawdown = round(matrix_of_drawdowns.min().min(),2)
-        worst_drawdown_index = matrix_of_drawdowns.min().idxmin(axis=1)
+        worst_drawdown_index = matrix_of_drawdowns.min(axis=1).idxmin()
         worst_drawdown_profit = round(matrix_of_equities[worst_drawdown_index]\
                                                         [matrix_of_equities[worst_drawdown_index].count()-1],2)
 
         best_drawdown = round(matrix_of_drawdowns.min().max(),2)
-        best_drawdown_index = matrix_of_drawdowns.min().idxmax(axis=1)
+        best_drawdown_index = matrix_of_drawdowns.min(axis=1).idxmax()
         best_drawdown_profit = round(matrix_of_equities[best_drawdown_index]\
                                                        [matrix_of_equities[best_drawdown_index].count()-1],2)
 
