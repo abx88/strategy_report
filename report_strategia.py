@@ -20,7 +20,7 @@ import plotly.express as px
 import streamlit as st
 from plotly import __version__
 print("Plotly version: ",__version__)
-init_notebook_mode(connected=True)
+#init_notebook_mode(connected=True)
 import os
 
 st.set_page_config(
