@@ -184,16 +184,20 @@ if pagina=='Riepilogo_equity':
 
 
     
-           
+    st.subheader("Equity suddivisa per strategie")       
+    
     singole_strat = px.line(dfriep, x=dfriep.index, y='cumreturn', color='name')
     singole_strat.update_xaxes(
         title_text = "report strategie divise",
         title_font = {"size": 15},
         title_standoff = 10)
     st.plotly_chart(singole_strat,use_container_width=False )
+    
+    st.subheader("Scatter risultati strategia")       
+    
     distrib_result = px.scatter(dfriep, y=dfriep.result, color='name')
     distrib_result.update_xaxes(
-        title_text = "distribuzione ritorni",
+        title_text = "scatter distribuzione ritorni",
         title_font = {"size": 15},
         title_standoff = 10)
     st.plotly_chart(distrib_result,use_container_width=False )
@@ -201,9 +205,9 @@ if pagina=='Riepilogo_equity':
         st.text("nessun dato")
     else:
         operazioni=sum(np.where(((dfriep.type=='buy')|(dfriep.type=='sell')),1,0))
-        st.text("Profit: "+str(bt.profit(dfriep.cumulativeGLOB)))
-        st.text("ROI: "+str(round((bt.profit(dfriep.cumulativeGLOB)/initial_capital*100),2))+'%')
-        st.text("operations: " + str(operazioni))
+        st.text("Profitto netto totale: "+str(bt.profit(dfriep.cumulativeGLOB)))
+        st.text("ROI su capitale iniziale: "+str(round((bt.profit(dfriep.cumulativeGLOB)/initial_capital*100),2))+'%')
+        st.text("operazioni: " + str(operazioni))
         result=dfriep[dfriep.result!=0].result
         st.text("average trade: " + str(bt.avg_trade(result)))   
         st.text("Profit Factor: "+ str(bt.profit_factor(result)))
@@ -345,9 +349,9 @@ else:
         st.text("correlazione strategie:  "+str(correlazione))
         st.subheader("strategia 1:")
         operazioni=sum(np.where(((dfriep.type=='buy')|(dfriep.type=='sell')),1,0))
-        st.text("Profit: "+str(bt.profit(dfriep.cumulativeGLOB)))
-        st.text("ROI: "+str(round((bt.profit(dfriep.cumulativeGLOB)/initial_capital*100),2))+'%')
-        st.text("operations: " + str(operazioni))
+        st.text("Profitto netto totale: "+str(bt.profit(dfriep.cumulativeGLOB)))
+        st.text("ROI su capitale iniziale: "+str(round((bt.profit(dfriep.cumulativeGLOB)/initial_capital*100),2))+'%')
+        st.text("operazioni: " + str(operazioni))
         result=dfriep[dfriep.result!=0].result
         st.text("average trade: " + str(bt.avg_trade(result)))  
         st.text("Max Closed Draw Down: "+ str(bt.max_draw_down(dfriep.cumulativeGLOB)))
@@ -357,9 +361,9 @@ else:
     else:
         st.subheader("strategia 2:")
         operazioni2=sum(np.where(((dfcorr.type=='buy')|(dfcorr.type=='sell')),1,0))
-        st.text("Profit: "+str(bt.profit(dfcorr.cumulativeGLOB)))
-        st.text("ROI: "+str(round((bt.profit(dfcorr.cumulativeGLOB)/initial_capital*100),2))+'%')
-        st.text("operations: " + str(operazioni2))
+        st.text("Profitto totale netto: "+str(bt.profit(dfcorr.cumulativeGLOB)))
+        st.text("ROI su capitale iniziale: "+str(round((bt.profit(dfcorr.cumulativeGLOB)/initial_capital*100),2))+'%')
+        st.text("operazioni: " + str(operazioni2))
         result2=dfcorr[dfcorr.result!=0].result
         st.text("average trade: " + str(bt.avg_trade(result2)))   
         st.text("Max Closed Draw Down: "+ str(bt.max_draw_down(dfcorr.cumulativeGLOB)))
