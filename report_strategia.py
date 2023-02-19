@@ -107,8 +107,8 @@ if pagina=='Riepilogo_equity':
         
         equity.add_trace(go.Scatter(
             mode = "lines",
-            y = dfriep.cumulativeGLOB,
-            x = dfriep.index,
+            y = dfriep[start:stop].cumulativeGLOB,
+            x = dfriep[start:stop].index,
             name="equity strategia",
             connectgaps=True))
         
@@ -127,23 +127,17 @@ if pagina=='Riepilogo_equity':
         dfinstrument.index = pd.to_datetime(dfinstrument.index)
         dfinstrument.sort_index(inplace=True)
         
-        
-
-        
-        
-        
-        
         equity = go.Figure()
         equity.add_trace(go.Scatter(
             mode = "lines",
-            y = dfriep.cumulativeGLOB,
-            x = dfriep.index,
+            y = dfriep[start:stop].cumulativeGLOB,
+            x = dfriep[start:stop].index,
             name="equity strategia",
             connectgaps=True))
         equity.add_trace(go.Scatter(
             mode = "lines",
-            y = dfinstrument.close,
-            x = dfinstrument.index,
+            y = dfinstrument[start:stop].close,
+            x = dfinstrument[start:stop].index,
             name = instrument,
             connectgaps=True,
             yaxis="y2"))
