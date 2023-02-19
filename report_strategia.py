@@ -210,8 +210,8 @@ if pagina=='Riepilogo_equity':
     if len(uploaded_files) == 0:
             st.text("nessun dato")
     else:
-        operazioni=sum(np.where(((dfriep[start:stop].type=='buy')|(dfriep[start:stop].type=='sell')),1,0))
-        st.text("Profitto netto totale: "+str(bt.profit(dfriep[start:stop].cumulativeGLOB)))
+        operazioni=sum(np.where(((dfriep.type=='buy')|(dfriep.type=='sell')),1,0))
+        st.text("Profitto netto totale: "+str(bt.profit(dfriep.cumulativeGLOB)))
         st.text("ROI su capitale iniziale: "+str(round((bt.profit(dfriep.cumulativeGLOB)/initial_capital*100),2))+'%')
         st.text("operazioni: " + str(operazioni))
         result=dfriep[dfriep.result!=0].result
