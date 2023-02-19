@@ -170,7 +170,7 @@ if pagina=='Riepilogo_equity':
     
     if len(uploaded_files) > 0:
         st.subheader("risultati cumulativi suddivisi per anno e mese")
-        reportAnnoMese=px.density_heatmap(dfriep, x="month", y="year",z="result", nbinsx=12, nbinsy=20, continuous_color_scale=greens)
+        reportAnnoMese=px.density_heatmap(dfriep, x="month", y="year",z="result", nbinsx=12, nbinsy=20, color_continuous_scale="greens")
 
         reportAnnoMese.update_xaxes(
             title_text = "report per anno e mese",
