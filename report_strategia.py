@@ -324,7 +324,7 @@ elif pagina=='Montecarlo':
         
         st.text("dataframe possibili equity")
         st.dataframe(matrix_of_equities.style.highlight_max(axis=1))
-        st.text("dataframe possibili drowdown")
+        st.text("dataframe possibili drawdowns")
         st.dataframe(matrix_of_drawdowns.style.highlight_min(axis=1))
         
         
