@@ -180,7 +180,7 @@ if pagina=='Riepilogo_equity':
         
         pivotAnnoMese = pd.pivot_table(dfriep, values='result', index=['year'], columns=['month'], aggfunc=np.sum)
        
-        st.dataframe(pivotAnnoMese.style.highlight_max(axis=1), use_container_widht=True)
+        st.dataframe(pivotAnnoMese.style.highlight_max(axis=1))
 
 
     
