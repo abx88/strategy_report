@@ -59,7 +59,7 @@ pagina = st.sidebar.radio(
 
 
 inizio_serie=str(dfriep.index.min())
-inizio_serieY=int(dfriep.min().year)
+#inizio_serieY=int(dfriep.min().year)
 inizio_serieM=int(dfriep.index.min().month)
 inizio_serieD=int(dfriep.index.min().day)
 fine_serie=str(dfriep.index.max())
