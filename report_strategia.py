@@ -53,7 +53,7 @@ for uploaded_file in uploaded_files:
     dfriep['pct']=dfriep.result/dfriep.cumulative.shift(1)
 
 
-    pagina = st.sidebar.radio(
+pagina = st.sidebar.radio(
          "funzionalità",
          ('Riepilogo_equity', 'Montecarlo','Confronto'))
 
