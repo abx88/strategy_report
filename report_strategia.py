@@ -58,9 +58,7 @@ pagina = st.sidebar.radio(
      ('Riepilogo_equity', 'Montecarlo','Confronto'))
 
 
-if len(uploaded_file) == 0:
-        st.text("Nessun dato")
-else:
+if len(uploaded_files) > 0:
     inizio_serie=str(dfriep.index.min())
     inizio_serieY=int(dfriep.index.min().year)
     inizio_serieM=int(dfriep.index.min().month)
