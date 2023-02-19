@@ -234,7 +234,7 @@ elif pagina=='Montecarlo':
         Costs = 0
         PercentageNoiseAddiction = 0
         OperationsPercentage = 100
-        NumberOfShuffles = 100
+        NumberOfShuffles = 10
         operations=dfriep.result.copy()
 
         original_operations = operations
