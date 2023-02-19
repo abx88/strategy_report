@@ -208,8 +208,8 @@ if pagina=='Riepilogo_equity':
         title_standoff = 10)
     st.plotly_chart(distrib_result,use_container_width=False )
     if len(uploaded_files) == 0:
-        st.text("nessun dato")
-    else:
+            st.text("nessun dato")
+        else:
         operazioni=sum(np.where(((dfriep.type=='buy')|(dfriep.type=='sell')),1,0))
         st.text("Profitto netto totale: "+str(bt.profit(dfriep.cumulativeGLOB)))
         st.text("ROI su capitale iniziale: "+str(round((bt.profit(dfriep.cumulativeGLOB)/initial_capital*100),2))+'%')
