@@ -180,11 +180,12 @@ if pagina=='Riepilogo_equity':
         
         pivotAnnoMese = pd.pivot_table(dfriep, values='result', index=['year'], columns=['month'], aggfunc=np.sum)
         # Highlight maximum value of each row with blue color
-        def highlight_max(row):
-            color = 'blue' if row.max() == row.max() else 'white'
-            return [f'background-color: {color}' for _ in row]
+        def highlight_max(s):
+            is_max = s == s.max()
+            return ['background-color: blue' if v else '' for v in is_max]
 
-        st.dataframe(pivotAnnoMese.style.apply(highlight_max, axis=1))
+        pivotAnnoMese.style.apply(highlight_max, axis=1)
+
 
     
            
