@@ -8,9 +8,6 @@ import pandas as pd
 import numpy as np
 import datetime as dt
 import matplotlib.pyplot as plt
-#import librerie.importazioni as imp
-#import librerie.stagionalità as stg
-#import librerie.pattern as pt
 import librerie.backtest as bt
 import librerie.calcolivari as clc
 import plotly.graph_objects as go
@@ -20,7 +17,6 @@ import plotly.express as px
 import streamlit as st
 from plotly import __version__
 print("Plotly version: ",__version__)
-#init_notebook_mode(connected=True)
 import os
 
 st.set_page_config(
