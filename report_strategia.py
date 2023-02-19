@@ -58,13 +58,6 @@ pagina = st.sidebar.radio(
      ('Riepilogo_equity', 'Montecarlo','Confronto'))
 
 
-dataInizio = st.date_input("inizio periodo", datetime.date(2019, 7, 6))
-st.write('inizio periodo:', data inizio)
-
-dataFine = st.date_input("fine periodo", datetime.date(2019, 7, 6))
-st.write('fine periodo:', data fine)
-
-
 
 if pagina=='Riepilogo_equity':
     st.header('Riepilogo equity')
@@ -101,12 +94,45 @@ if pagina=='Riepilogo_equity':
         dfinstrument.index = pd.to_datetime(dfinstrument.index)
         dfinstrument.sort_index(inplace=True)
         
+        
+        inizio_serie=str(dfinstrument.index.min())
+        inizio_serieY=int(dfinstrument.index.min().year)
+        inizio_serieM=int(dfinstrument.index.min().month)
+        inizio_serieD=int(dfinstrumentf.index.min().day)
+        fine_serie=str(dfinstrument.index.max())
+        fine_serieY=int(dfinstrument.index.max().year)
+        fine_serieM=int(dfinstrument.index.max().month)
+        fine_serieD=int(dfinstrument.index.max().day)
+
+        st.sidebar.text("INIZIO SERIE "+inizio_serie)
+        st.sidebar.text("FINE SERIE "+fine_serie)
+
+        inizio=str(dfinstrument.index.min())
+        fine=str(dfinstrument.index.max())
+        startDate=inizio[0:4]+inizio[5:7]+inizio[8:10]
+        endDate=fine[0:4]+fine[5:7]+fine[8:10]
+        year=str((dfinstrument.index.max().year))
+        month=str((dfinstrument.index.max().month))
+        
+        
+        start = st.sidebar.date_input(
+             "data inizio",
+             dt.date(inizio_serieY, inizio_serieM, inizio_serieD))
+
+
+        stop = st.sidebar.date_input(
+             "data fine",
+             dt.date(fine_serieY, fine_serieM, fine_serieD))
+        
+        
+        
+        
         equity = go.Figure()
         equity.add_trace(go.Scatter(
             mode = "lines",
             y = dfriep.cumulativeGLOB,
             x = dfriep.index,
-            name="report",
+            name="equity strategia",
             connectgaps=True))
         equity.add_trace(go.Scatter(
             mode = "lines",
