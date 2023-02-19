@@ -107,8 +107,8 @@ if pagina=='Riepilogo_equity':
         
         equity.add_trace(go.Scatter(
             mode = "lines",
-            y = dfriep[start:stop].cumulativeGLOB,
-            x = dfriep[start:stop].index,
+            y = dfriep.cumulativeGLOB,
+            x = dfriep.index,
             name="equity strategia",
             connectgaps=True))
         
