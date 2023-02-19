@@ -44,13 +44,14 @@ for uploaded_file in uploaded_files:
     dfriep=dfriep.append(df)
 
    
-    dfriep.set_index(dfriep.date_time, inplace=True)
-    dfriep.index = pd.to_datetime(dfriep.index)
-    dfriep.sort_index(inplace=True)
-    dfriep['cumulativeGLOB']=dfriep.result.cumsum()
-    dfriep['year']=dfriep.index.year
-    dfriep['month']=dfriep.index.month
-    dfriep['pct']=dfriep.result/dfriep.cumulative.shift(1)
+
+dfriep.set_index(dfriep.date_time, inplace=True)
+dfriep.index = pd.to_datetime(dfriep.index)
+dfriep.sort_index(inplace=True)
+dfriep['cumulativeGLOB']=dfriep.result.cumsum()
+dfriep['year']=dfriep.index.year
+dfriep['month']=dfriep.index.month
+dfriep['pct']=dfriep.result/dfriep.cumulative.shift(1)
 
 
 pagina = st.sidebar.radio(
