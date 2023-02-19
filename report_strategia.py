@@ -43,22 +43,22 @@ for uploaded_file in uploaded_files:
     df['name']=uploaded_file.name
     dfriep=dfriep.append(df)
 
-    
-dfriep.set_index(dfriep.date_time, inplace=True)
-dfriep.index = pd.to_datetime(dfriep.index)
-dfriep.sort_index(inplace=True)
-dfriep['cumulativeGLOB']=dfriep.result.cumsum()
-dfriep['year']=dfriep.index.year
-dfriep['month']=dfriep.index.month
-dfriep['pct']=dfriep.result/dfriep.cumulative.shift(1)
+   
+    dfriep.set_index(dfriep.date_time, inplace=True)
+    dfriep.index = pd.to_datetime(dfriep.index)
+    dfriep.sort_index(inplace=True)
+    dfriep['cumulativeGLOB']=dfriep.result.cumsum()
+    dfriep['year']=dfriep.index.year
+    dfriep['month']=dfriep.index.month
+    dfriep['pct']=dfriep.result/dfriep.cumulative.shift(1)
 
 
-pagina = st.sidebar.radio(
-     "funzionalità",
-     ('Riepilogo_equity', 'Montecarlo','Confronto'))
+    pagina = st.sidebar.radio(
+         "funzionalità",
+         ('Riepilogo_equity', 'Montecarlo','Confronto'))
 
 
-if len(uploaded_files) > 0:
+if len(uploaded_files) > 0: 
     inizio_serie=str(dfriep.index.min())
     inizio_serieY=int(dfriep.index.min().year)
     inizio_serieM=int(dfriep.index.min().month)
@@ -107,8 +107,8 @@ if pagina=='Riepilogo_equity':
         
         equity.add_trace(go.Scatter(
             mode = "lines",
-            y = dfriep[start:stop].cumulativeGLOB,
-            x = dfriep[start:stop].index,
+            y = dfriep.cumulativeGLOB,
+            x = dfriep.index,
             name="equity strategia",
             connectgaps=True))
         
