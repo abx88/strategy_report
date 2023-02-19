@@ -61,12 +61,12 @@ pagina = st.sidebar.radio(
 dataInizio = st.date_input(
     "inizio periodo",
     datetime.date(2019, 7, 6))
-st.write('inizio periodo:', data inizio)
+    st.write('inizio periodo:', data inizio)
 
 dataFine = st.date_input(
     "fine periodo",
     datetime.date(2019, 7, 6))
-st.write('fine periodo:', data fine)
+    st.write('fine periodo:', data fine)
 
 
 
