@@ -322,8 +322,10 @@ elif pagina=='Montecarlo':
         montecarlo = px.line(matrix_of_equities)
         st.plotly_chart(montecarlo,use_container_width=False )
         
+        st.text("dataframe possibili equity")
         st.dataframe(matrix_of_equities.style.highlight_max(axis=1))
-        st.dataframe(matrix_of_drawdowns.style.highlight_max(axis=1))
+        st.text("dataframe possibili drowdown")
+        st.dataframe(matrix_of_drawdowns.style.highlight_min(axis=1))
         
         
 else: 
