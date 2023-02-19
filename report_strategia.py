@@ -88,6 +88,15 @@ if len(uploaded_files) > 0:
     stop = st.sidebar.date_input(
          "data fine",
          dt.date(fine_serieY, fine_serieM, fine_serieD))
+else:
+    start = st.sidebar.date_input(
+         "data inizio",
+         dt.date(,,)
+
+
+    stop = st.sidebar.date_input(
+         "data fine",
+         dt.date(,,)
 
 
 
