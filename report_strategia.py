@@ -153,9 +153,6 @@ if pagina=='Riepilogo_equity':
         st.plotly_chart(equity,use_container_width=False)
 
 
-  
-
-
     if len(uploaded_files) > 0:
         st.subheader("risultati per anno suddivisi per strategie")        
         reportAnno = px.histogram(dfriep, x="year", y="result",
@@ -173,7 +170,7 @@ if pagina=='Riepilogo_equity':
     
     if len(uploaded_files) > 0:
         st.subheader("risultati cumulativi suddivisi per anno e mese")
-        reportAnnoMese=px.density_heatmap(dfriep, x="month", y="year",z="result", nbinsx=12, nbinsy=20)
+        reportAnnoMese=px.density_heatmap(dfriep, x="month", y="year",z="result", nbinsx=12, nbinsy=20, continuous_color_scale=greens)
 
         reportAnnoMese.update_xaxes(
             title_text = "report per anno e mese",
@@ -244,8 +241,6 @@ elif pagina=='Montecarlo':
         original_equity = original_operations.cumsum()
         original_profit = round(original_operations.sum(),2)
         original_drawdown = bt.drawdown(original_operations)
-        #original_drawdown = bt.max_draw_down(original_operations)
-        #original_max_drawdown = round(original_drawdown.min(),2)
         original_max_drawdown = bt.max_draw_down(dfriep.cumulativeGLOB)
 
 
@@ -274,7 +269,6 @@ elif pagina=='Montecarlo':
             my_permutation = pd.Series(my_permutation)
             new_equity = my_permutation.cumsum()
             new_drawdown = bt.drawdown(new_equity)
-            #new_drawdown = bt.max_draw_down(new_equity)
             matrix_of_equities["shuffle_" + str(i + 1)] = new_equity
             matrix_of_drawdowns["shuffle_" + str(i + 1)] = new_drawdown
             max_drawdown_list.append(new_drawdown.min())
@@ -284,9 +278,6 @@ elif pagina=='Montecarlo':
         timespent = end - start
         print("Shuffles executed in:", timespent)
         print("")
-
-        #matrix_of_equities.to_csv('matrix_of_equities.csv', sep=',', decimal='.', index=False)
-        #matrix_of_drawdowns.to_csv('matrix_of_drawdowns.csv', sep=',', decimal='.', index=False)
 
         worst_drawdown = round(matrix_of_drawdowns.min().min(),2)
         worst_drawdown_index = matrix_of_drawdowns.min().idxmin(axis=1)
@@ -313,7 +304,6 @@ elif pagina=='Montecarlo':
 
         st.text("95 Percentile Montecarlo Max Draw Down: "+ str(MaxDrawDown95))
         st.text("Montecarlo Risk Factor on 95 Percentile Probability: "+str(riskfactor95))
-        #st.text("Worst Montecarlo Max Draw Down: "+str(round(min(max_drawdown_list),2)))
         st.text("Worst Montecarlo Max Draw Down: "+str(worst_drawdown))
         st.text("Montecarlo Risk Factor on Max Draw Down: "+str(riskfactor))
 
@@ -327,8 +317,6 @@ else:
     dfcorr=pd.DataFrame(columns=["n_op", "date_time","type","n_ord","lots","entry_price","sl",
                                  "tp","result","cumulative","cumreturn","name"])
     for uploaded_file_corr in uploaded_files_corr:
-        #bytes_data = uploaded_file.read()
-        #st.write("filename:", uploaded_file.name)
         tabella = pd.read_csv(uploaded_file_corr, delimiter="\t", names=[0,1,2,3,4,5,6,7,8,9])
         df=tabella.rename(columns={0: "n_op", 1: "date_time",
                           2: "type", 3: "n_ord",
@@ -336,11 +324,7 @@ else:
                           6: "sl", 7: "tp",8: "result",
                           9: "cumulative"})
         df.set_index(df.date_time, inplace=True)
-        #df.drop("date_time", axis=1, inplace=True)
         df["cumreturn"]=df.result.cumsum()
-        #df["net_cumulative"]=
-        #df.drop("cumulative",axis=1,inplace=True)
-        #df.dropna(axis=0, inplace=True)
         df['name']=uploaded_file.name
         dfcorr=dfcorr.append(df)
     dfcorr.set_index(dfcorr.date_time, inplace=True)
@@ -364,8 +348,7 @@ else:
         result=dfriep[dfriep.result!=0].result
         st.text("average trade: " + str(bt.avg_trade(result)))  
         st.text("Max Closed Draw Down: "+ str(bt.max_draw_down(dfriep.cumulativeGLOB)))
-        #st.text("Max Closed Draw Down % su capitale iniziale: "+ str(round((bt.max_draw_down(dfriep.cumulativeGLOB)/initial_capital*100),2))+'%')
-
+        
     if len(uploaded_files_corr) == 0:
         st.text("nessun dato")
     else:
@@ -377,7 +360,7 @@ else:
         result2=dfcorr[dfcorr.result!=0].result
         st.text("average trade: " + str(bt.avg_trade(result2)))   
         st.text("Max Closed Draw Down: "+ str(bt.max_draw_down(dfcorr.cumulativeGLOB)))
-        #st.text("Max Closed Draw Down % su capitale iniziale: "+ str(round((bt.max_draw_down(dfcorr.cumulativeGLOB)/initial_capital*100),2))+'%')
+        
         
 
 
