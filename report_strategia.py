@@ -98,7 +98,7 @@ if pagina=='Riepilogo_equity':
         inizio_serie=str(dfinstrument.index.min())
         inizio_serieY=int(dfinstrument.index.min().year)
         inizio_serieM=int(dfinstrument.index.min().month)
-        inizio_serieD=int(dfinstrumentf.index.min().day)
+        inizio_serieD=int(dfinstrument.index.min().day)
         fine_serie=str(dfinstrument.index.max())
         fine_serieY=int(dfinstrument.index.max().year)
         fine_serieM=int(dfinstrument.index.max().month)
