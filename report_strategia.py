@@ -288,6 +288,10 @@ elif pagina=='Montecarlo':
         timespent = end - start
         print("Shuffles executed in:", timespent)
         print("")
+        
+        st.dataframe(matrix_of_equities)
+        st.dataframe(matrix_of_drawdowns)
+
 
         #matrix_of_equities.to_csv('matrix_of_equities.csv', sep=',', decimal='.', index=False)
         #matrix_of_drawdowns.to_csv('matrix_of_drawdowns.csv', sep=',', decimal='.', index=False)
