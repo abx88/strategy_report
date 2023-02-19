@@ -58,6 +58,41 @@ pagina = st.sidebar.radio(
      ('Riepilogo_equity', 'Montecarlo','Confronto'))
 
 
+if len(uploaded_file) == 0:
+        st.text("Nessun dato")
+else:
+    inizio_serie=str(dfriep.index.min())
+    inizio_serieY=int(dfriep.index.min().year)
+    inizio_serieM=int(dfriep.index.min().month)
+    inizio_serieD=int(dfriep.index.min().day)
+    fine_serie=str(dfriep.index.max())
+    fine_serieY=int(dfriep.index.max().year)
+    fine_serieM=int(dfriep.index.max().month)
+    fine_serieD=int(dfriep.index.max().day)
+
+    st.sidebar.text("INIZIO SERIE "+inizio_serie)
+    st.sidebar.text("FINE SERIE "+fine_serie)
+
+    inizio=str(dfriep.index.min())
+    fine=str(dfriep.index.max())
+    startDate=inizio[0:4]+inizio[5:7]+inizio[8:10]
+    endDate=fine[0:4]+fine[5:7]+fine[8:10]
+    year=str((dfriep.index.max().year))
+    month=str((dfriep.index.max().month))
+
+
+    start = st.sidebar.date_input(
+         "data inizio",
+         dt.date(inizio_serieY, inizio_serieM, inizio_serieD))
+
+
+    stop = st.sidebar.date_input(
+         "data fine",
+         dt.date(fine_serieY, fine_serieM, fine_serieD))
+
+
+
+
 
 if pagina=='Riepilogo_equity':
     st.header('Riepilogo equity')
@@ -95,34 +130,7 @@ if pagina=='Riepilogo_equity':
         dfinstrument.sort_index(inplace=True)
         
         
-        inizio_serie=str(dfinstrument.index.min())
-        inizio_serieY=int(dfinstrument.index.min().year)
-        inizio_serieM=int(dfinstrument.index.min().month)
-        inizio_serieD=int(dfinstrument.index.min().day)
-        fine_serie=str(dfinstrument.index.max())
-        fine_serieY=int(dfinstrument.index.max().year)
-        fine_serieM=int(dfinstrument.index.max().month)
-        fine_serieD=int(dfinstrument.index.max().day)
 
-        st.sidebar.text("INIZIO SERIE "+inizio_serie)
-        st.sidebar.text("FINE SERIE "+fine_serie)
-
-        inizio=str(dfinstrument.index.min())
-        fine=str(dfinstrument.index.max())
-        startDate=inizio[0:4]+inizio[5:7]+inizio[8:10]
-        endDate=fine[0:4]+fine[5:7]+fine[8:10]
-        year=str((dfinstrument.index.max().year))
-        month=str((dfinstrument.index.max().month))
-        
-        
-        start = st.sidebar.date_input(
-             "data inizio",
-             dt.date(inizio_serieY, inizio_serieM, inizio_serieD))
-
-
-        stop = st.sidebar.date_input(
-             "data fine",
-             dt.date(fine_serieY, fine_serieM, fine_serieD))
         
         
         
