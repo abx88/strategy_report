@@ -179,8 +179,13 @@ if pagina=='Riepilogo_equity':
         st.plotly_chart(reportAnnoMese,use_container_width=False )
         
         pivotAnnoMese = pd.pivot_table(dfriep, values='result', index=['year'], columns=['month'], aggfunc=np.sum)
-        pivotAnnoMese.style.background_gradient(axis=1, cmap='Blues')
-        st.dataframe(pivotAnnoMese.style.highlight_max(axis=1))
+        # Highlight maximum value of each row with blue color
+        def highlight_max(row):
+            color = 'blue' if row.max() == row.max() else 'white'
+            return [f'background-color: {color}' for _ in row]
+
+        st.dataframe(pivotAnnoMese.style.apply(highlight_max, axis=1))
+
     
            
     singole_strat = px.line(dfriep, x=dfriep.index, y='cumreturn', color='name')
