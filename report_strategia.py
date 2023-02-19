@@ -185,6 +185,7 @@ if pagina=='Riepilogo_equity':
             return ['background-color: blue' if v else '' for v in is_max]
 
         pivotAnnoMese.style.apply(highlight_max, axis=1)
+        st.dataframe(pivotAnnoMese)
 
 
     
