@@ -58,15 +58,11 @@ pagina = st.sidebar.radio(
      ('Riepilogo_equity', 'Montecarlo','Confronto'))
 
 
-dataInizio = st.date_input(
-    "inizio periodo",
-    datetime.date(2019, 7, 6))
-    st.write('inizio periodo:', data inizio)
+dataInizio = st.date_input("inizio periodo", datetime.date(2019, 7, 6))
+st.write('inizio periodo:', data inizio)
 
-dataFine = st.date_input(
-    "fine periodo",
-    datetime.date(2019, 7, 6))
-    st.write('fine periodo:', data fine)
+dataFine = st.date_input("fine periodo", datetime.date(2019, 7, 6))
+st.write('fine periodo:', data fine)
 
 
 
