@@ -75,7 +75,7 @@ if pagina=='Riepilogo_equity':
             mode = "lines",
             y = dfriep.cumulativeGLOB,
             x = dfriep.index,
-            name="report",
+            name="equity strategia",
             connectgaps=True))
         
         equity.update_xaxes(
@@ -184,7 +184,6 @@ if pagina=='Riepilogo_equity':
         st.text("Average Loss: "+ str(bt.avg_loss(result)))
         st.text("Avg Draw Down (ad operazioni chiuse): "+ str(bt.avgdrawdown_nozero(dfriep.cumulativeGLOB)))
         st.text("Max Draw Down (ad operazioni chiuse): "+ str(bt.max_draw_down(dfriep.cumulativeGLOB)))
-        #st.text("Max Closed Draw Down % sul capitale iniziale: "+ str(round((bt.max_draw_down(dfriep.cumulativeGLOB)/initial_capital*100),2))+'%')
         st.text("Avg Delay Between Peaks(trade): "+ str(bt.avg_delay_between_peaks(dfriep.cumulativeGLOB)))
         st.text("Max Delay Between Peaks(trade): "+ str(bt.max_delay_between_peaks(dfriep.cumulativeGLOB)))
     
