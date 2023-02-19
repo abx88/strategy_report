@@ -248,8 +248,6 @@ elif pagina=='Montecarlo':
         original_equity = original_operations.cumsum()
         original_profit = round(original_operations.sum(),2)
         original_drawdown = bt.drawdown(original_operations)
-        #original_drawdown = bt.max_draw_down(original_operations)
-        #original_max_drawdown = round(original_drawdown.min(),2)
         original_max_drawdown = bt.max_draw_down(dfriep.cumulativeGLOB)
 
 
@@ -278,7 +276,6 @@ elif pagina=='Montecarlo':
             my_permutation = pd.Series(my_permutation)
             new_equity = my_permutation.cumsum()
             new_drawdown = bt.drawdown(new_equity)
-            #new_drawdown = bt.max_draw_down(new_equity)
             matrix_of_equities["shuffle_" + str(i + 1)] = new_equity
             matrix_of_drawdowns["shuffle_" + str(i + 1)] = new_drawdown
             max_drawdown_list.append(new_drawdown.min())
@@ -289,12 +286,7 @@ elif pagina=='Montecarlo':
         print("Shuffles executed in:", timespent)
         print("")
         
-        st.dataframe(matrix_of_equities)
-        st.dataframe(matrix_of_drawdowns)
 
-
-        #matrix_of_equities.to_csv('matrix_of_equities.csv', sep=',', decimal='.', index=False)
-        #matrix_of_drawdowns.to_csv('matrix_of_drawdowns.csv', sep=',', decimal='.', index=False)
 
         worst_drawdown = round(matrix_of_drawdowns.min().min(), 2)
         worst_drawdown_index = matrix_of_drawdowns.min().idxmin(axis=0)
@@ -323,13 +315,15 @@ elif pagina=='Montecarlo':
 
         st.text("95 Percentile Montecarlo Max Draw Down: "+ str(MaxDrawDown95))
         st.text("Montecarlo Risk Factor on 95 Percentile Probability: "+str(riskfactor95))
-        #st.text("Worst Montecarlo Max Draw Down: "+str(round(min(max_drawdown_list),2)))
         st.text("Worst Montecarlo Max Draw Down: "+str(worst_drawdown))
         st.text("Montecarlo Risk Factor on Max Draw Down: "+str(riskfactor))
 
 
         montecarlo = px.line(matrix_of_equities)
         st.plotly_chart(montecarlo,use_container_width=False )
+        
+        st.dataframe(matrix_of_equities.style.highlight_max(axis=1))
+        st.dataframe(matrix_of_drawdowns.style.highlight_max(axis=1))
         
         
 else: 
