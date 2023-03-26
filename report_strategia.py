@@ -326,32 +326,30 @@ elif pagina=='Montecarlo':
         st.text("Montecarlo Risk Factor on Max Draw Down: "+str(riskfactor))
         
 
-        def plot_equity_lines(df, title='', original_color='blue', best_color='green', worst_color='red', other_color='lightgray'):
-            montecarlo = go.Figure()
+        
+        # Equity originale
+        montecarlo.add_trace(go.Scatter(x=dfriep.index, y=dfriep['equity'], mode='lines', 
+                                        name='Equity originale', line=dict(color='blue')))
 
-            # Equity originale
-            montecarlo.add_trace(go.Scatter(x=df.index, y=df['equity'], mode='lines', 
-                                            name='Equity originale', line=dict(color=original_color)))
+        # Equity migliore
+        best_equity = dfriep.groupby(['year']).max()['equity'].reset_index()
+        best_equity = best_equity.merge(dfriep, on=['year', 'equity'], how='left')
+        montecarlo.add_trace(go.Scatter(x=best_equity.index, y=best_equity['equity'], 
+                                        mode='lines', name='Equity migliore', line=dict(color='green')))
 
-            # Equity migliore
-            best_equity = df.groupby(['year']).max()['equity'].reset_index()
-            best_equity = best_equity.merge(df, on=['year', 'equity'], how='left')
-            montecarlo.add_trace(go.Scatter(x=best_equity.index, y=best_equity['equity'], 
-                                            mode='lines', name='Equity migliore', line=dict(color=best_color)))
+        # Equity peggiore
+        worst_equity = dfriep.groupby(['year']).min()['equity'].reset_index()
+        worst_equity = worst_equity.merge(dfriep, on=['year', 'equity'], how='left')
+        montecarlo.add_trace(go.Scatter(x=worst_equity.index, y=worst_equity['equity'], 
+                                        mode='lines', name='Equity peggiore', line=dict(color='red')))
 
-            # Equity peggiore
-            worst_equity = df.groupby(['year']).min()['equity'].reset_index()
-            worst_equity = worst_equity.merge(df, on=['year', 'equity'], how='left')
-            montecarlo.add_trace(go.Scatter(x=worst_equity.index, y=worst_equity['equity'], 
-                                            mode='lines', name='Equity peggiore', line=dict(color=worst_color)))
+        # Altre equity
+        other_equity = dfriep[~dfriep.index.isin(best_equity.index) & ~dfriep.index.isin(worst_equity.index)]
+        if not other_equity.empty:
+            montecarlo.add_trace(go.Scatter(x=other_equity.index, y=other_equity['equity'], 
+                                            mode='lines', name='Altre equity', line=dict(color='lightgray')))
 
-            # Altre equity
-            other_equity = df[~df.index.isin(best_equity.index) & ~df.index.isin(worst_equity.index)]
-            if not other_equity.empty:
-                montecarlo.add_trace(go.Scatter(x=other_equity.index, y=other_equity['equity'], 
-                                                mode='lines', name='Altre equity', line=dict(color=other_color)))
-
-            montecarlo.update_layout(title=title, xaxis_title='Anno', yaxis_title='Equity')
+        montecarlo.update_layout(title='analisi montecarlo', xaxis_title='Anno', yaxis_title='Equity')
 
         st.plotly_chart(montecarlo,use_container_width=False )
        
