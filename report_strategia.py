@@ -41,8 +41,8 @@ for uploaded_file in uploaded_files:
     df.set_index(df.date_time, inplace=True)
     df["cumreturn"]=df.result.cumsum()
     df['name']=uploaded_file.name
-    df['reluststr']=str(df.result)
-    df=df.loc[~df['resultstr'].isin(0)]
+    df['reluststr']=df['result'].astype(str)
+    df=df.loc[~df['resultstr'].isin("0")]
     dfriep=dfriep.append(df)
    
 
