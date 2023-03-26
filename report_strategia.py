@@ -237,7 +237,7 @@ elif pagina=='Montecarlo':
     if len(uploaded_files) == 0:
         st.text("nessun dato")
     else:
-        np.random.seed(42)
+        np.random.seed(4)
         Costs = 0
         PercentageNoiseAddiction = 0
         OperationsPercentage = 100
