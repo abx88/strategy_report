@@ -42,10 +42,9 @@ for uploaded_file in uploaded_files:
     df["cumreturn"]=df.result.cumsum()
     df['name']=uploaded_file.name
     dfriep=dfriep.append(df)
-
    
 
-dfriep.set_index(dfriep.date_time, inplace=True)
+ dfriep.set_index(dfriep.date_time, inplace=True)
 dfriep.index = pd.to_datetime(dfriep.index)
 dfriep.sort_index(inplace=True)
 dfriep['cumulativeGLOB']=dfriep.result.cumsum()
