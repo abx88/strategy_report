@@ -233,75 +233,77 @@ if pagina=='Riepilogo_equity':
     
     
 elif pagina=='Montecarlo':
-    
     st.header("Montecarlo")
-
-    # Controlla se ci sono file caricati
-    uploaded_files = st.file_uploader("Carica i dati", accept_multiple_files=True)
-
-    # Controlla se la matrice dei drawdown è già stata calcolata
-    drawdowns_df = pd.DataFrame()
-    if not drawdowns_df.empty:
-        st.text("Matrice dei drawdown già calcolata")
-
-    # Se non ci sono file caricati, mostra un messaggio
-    if not uploaded_files:
-        st.text("Nessun dato")
+    if len(uploaded_files) == 0:
+        st.text("nessun dato")
     else:
-        # Imposta i parametri per il Monte Carlo
+        np.random.seed(42)
         Costs = 0
         PercentageNoiseAddiction = 0
         OperationsPercentage = 100
         NumberOfShuffles = 10
+        operations=dfriep.result.copy()
 
-        # Rimuove le righe con risultato pari a zero
-        #dfriep = dfriep.loc[~dfriep['result'].isin([0])]
+        original_operations = operations
 
-        # Prende la serie di operazioni
-        operations = dfriep.result.copy()
-
-        # Aggiunge i costi se necessario
         if Costs != 0:
-            operations = costs_adder(operations, Costs)
+            original_operations = costs_adder(operations, Costs)
 
-        # Aggiunge rumore se necessario
         if PercentageNoiseAddiction != 0:
-            operations = noise_adder(operations, PercentageNoiseAddiction)
+            original_operations = noise_adder(operations, PercentageNoiseAddiction)
 
-        # Calcola l'equity originale
-        original_equity = operations.cumsum()
-        original_profit = round(operations.sum(), 2)
+        original_equity = original_operations.cumsum()
+        original_profit = round(original_operations.sum(),2)
+        original_drawdown = bt.drawdown(original_operations)
+        original_max_drawdown = bt.max_draw_down(dfriep.cumulativeGLOB)
 
-        # Calcola la matrice dei drawdown solo se non è già stata calcolata
-        if drawdowns_df.empty:
-            original_drawdown = bt.drawdown(original_equity)
-            original_max_drawdown = bt.max_draw_down(dfriep.cumulativeGLOB)
 
-            if OperationsPercentage == 100:
-                matrix_of_equities = pd.DataFrame(original_equity).reset_index()
-                matrix_of_equities.drop(matrix_of_equities.columns[0], axis=1, inplace=True)
-                matrix_of_equities.columns = ["original"]
-                matrix_of_drawdowns = pd.DataFrame(original_drawdown).reset_index()
-                matrix_of_drawdowns.drop(matrix_of_drawdowns.columns[0], axis=1, inplace=True)
-                matrix_of_drawdowns.columns = ["original"]
-            else:
-                cutnumber = int(len(operations) * int(OperationsPercentage) / 100)
-                matrix_of_equities = pd.DataFrame(original_equity[:cutnumber]).reset_index()
-                matrix_of_equities.drop(matrix_of_equities.columns[0], axis=1, inplace=True)
-                matrix_of_equities.columns = ["original"]
-                matrix_of_drawdowns = pd.DataFrame(original_drawdown[:cutnumber]).reset_index()
-                matrix_of_drawdowns.drop(matrix_of_drawdowns.columns[0], axis=1, inplace=True)
-                matrix_of_drawdowns.columns = ["original"]
-
-            # Aggiunge le colonne al DataFrame dei drawdowns
-            drawdowns_df["original"] = original_drawdown
-
-        else:
-            # Utilizza la matrice dei drawdown già calcolata in precedenza
+        if OperationsPercentage == 100:
             matrix_of_equities = pd.DataFrame(original_equity).reset_index()
             matrix_of_equities.drop(matrix_of_equities.columns[0], axis=1, inplace=True)
-            matrix_of_equities
+            matrix_of_equities.columns = ["original"]
+            matrix_of_drawdowns = pd.DataFrame(original_drawdown).reset_index()
+            matrix_of_drawdowns.drop(matrix_of_drawdowns.columns[0], axis=1, inplace=True)
+            matrix_of_drawdowns.columns = ["original"]
+        else:
+            cutnumber = int(len(operations) * int(OperationsPercentage) / 100)
+            matrix_of_equities = pd.DataFrame(original_equity[:cutnumber]).reset_index()
+            matrix_of_equities.drop(matrix_of_equities.columns[0], axis=1, inplace=True)
+            matrix_of_equities.columns = ["original"]
+            matrix_of_drawdowns = pd.DataFrame(original_drawdown[:cutnumber]).reset_index()
+            matrix_of_drawdowns.drop(matrix_of_drawdowns.columns[0], axis=1, inplace=True)
+            matrix_of_drawdowns.columns = ["original"]
 
+        max_drawdown_list = []
+        fraction = OperationsPercentage / 100
+        i = 0
+        start = dt.datetime.now()
+        while i < NumberOfShuffles:
+            my_permutation = original_operations.sample(frac = fraction).reset_index(drop = True)
+            my_permutation = pd.Series(my_permutation)
+            new_equity = my_permutation.cumsum()
+            new_drawdown = bt.drawdown(new_equity)
+            matrix_of_equities["shuffle_" + str(i + 1)] = new_equity
+            matrix_of_drawdowns["shuffle_" + str(i + 1)] = new_drawdown
+            max_drawdown_list.append(new_drawdown.min())
+            i += 1
+
+        end = dt.datetime.now()
+        timespent = end - start
+        print("Shuffles executed in:", timespent)
+        print("")
+        
+
+
+        worst_drawdown = round(matrix_of_drawdowns.min().min(), 2)
+        worst_drawdown_index = matrix_of_drawdowns.min().idxmin(axis=0)
+        worst_drawdown_profit = round(matrix_of_equities[worst_drawdown_index] \
+                                      [matrix_of_equities[worst_drawdown_index].count() - 1], 2)
+
+        best_drawdown = round(matrix_of_drawdowns.min().max(), 2)
+        best_drawdown_index = matrix_of_drawdowns.min().idxmax(axis=0)
+        best_drawdown_profit = round(matrix_of_equities[best_drawdown_index] \
+                                     [matrix_of_equities[best_drawdown_index].count() - 1], 2)
 
 
 
@@ -331,6 +333,7 @@ elif pagina=='Montecarlo':
         st.dataframe(matrix_of_equities.style.highlight_max(axis=1))
         st.text("dataframe possibili drawdowns")
         st.dataframe(matrix_of_drawdowns.style.highlight_min(axis=1))
+        
         
         
 else: 
