@@ -41,6 +41,7 @@ for uploaded_file in uploaded_files:
     df.set_index(df.date_time, inplace=True)
     df["cumreturn"]=df.result.cumsum()
     df['name']=uploaded_file.name
+    df=df.loc[~df['result'].isin(0)]
     dfriep=dfriep.append(df)
    
 
@@ -51,7 +52,7 @@ dfriep['cumulativeGLOB']=dfriep.result.cumsum()
 dfriep['year']=dfriep.index.year
 dfriep['month']=dfriep.index.month
 dfriep['pct']=dfriep.result/dfriep.cumulative.shift(1)
-dfriep = dfriep.loc[~dfriep["result"].isin(0)]
+#dfriep = dfriep.loc[~dfriep["result"].isin(0)]
 
 
 pagina = st.sidebar.radio(
