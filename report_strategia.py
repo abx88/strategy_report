@@ -330,27 +330,31 @@ elif pagina=='Montecarlo':
             montecarlo = go.Figure()
 
             # Equity originale
-            montecarlo.add_trace(go.Scatter(x=df.index, y=df['equity'], mode='lines', name='Equity originale', line=dict(color=original_color)))
+            montecarlo.add_trace(go.Scatter(x=df.index, y=df['equity'], mode='lines', 
+                                            name='Equity originale', line=dict(color=original_color)))
 
             # Equity migliore
             best_equity = df.groupby(['year']).max()['equity'].reset_index()
             best_equity = best_equity.merge(df, on=['year', 'equity'], how='left')
-            montecarlo.add_trace(go.Scatter(x=best_equity.index, y=best_equity['equity'], mode='lines', name='Equity migliore', line=dict(color=best_color)))
+            montecarlo.add_trace(go.Scatter(x=best_equity.index, y=best_equity['equity'], 
+                                            mode='lines', name='Equity migliore', line=dict(color=best_color)))
 
             # Equity peggiore
             worst_equity = df.groupby(['year']).min()['equity'].reset_index()
             worst_equity = worst_equity.merge(df, on=['year', 'equity'], how='left')
-            montecarlo.add_trace(go.Scatter(x=worst_equity.index, y=worst_equity['equity'], mode='lines', name='Equity peggiore', line=dict(color=worst_color)))
+            montecarlo.add_trace(go.Scatter(x=worst_equity.index, y=worst_equity['equity'], 
+                                            mode='lines', name='Equity peggiore', line=dict(color=worst_color)))
 
             # Altre equity
             other_equity = df[~df.index.isin(best_equity.index) & ~df.index.isin(worst_equity.index)]
             if not other_equity.empty:
-                montecarlo.add_trace(go.Scatter(x=other_equity.index, y=other_equity['equity'], mode='lines', name='Altre equity', line=dict(color=other_color)))
+                montecarlo.add_trace(go.Scatter(x=other_equity.index, y=other_equity['equity'], 
+                                                mode='lines', name='Altre equity', line=dict(color=other_color)))
 
             montecarlo.update_layout(title=title, xaxis_title='Anno', yaxis_title='Equity')
 
         st.plotly_chart(montecarlo,use_container_width=False )
-        
+       
         
         
         
