@@ -254,11 +254,8 @@ elif pagina=='Montecarlo':
         OperationsPercentage = 100
         NumberOfShuffles = 10
 
-        # Carica i dati dal file CSV
-        dfriep = pd.read_csv(uploaded_files[0], sep=";", decimal=",")
-
         # Rimuove le righe con risultato pari a zero
-        dfriep = dfriep.loc[~dfriep['result'].isin([0])]
+        #dfriep = dfriep.loc[~dfriep['result'].isin([0])]
 
         # Prende la serie di operazioni
         operations = dfriep.result.copy()
