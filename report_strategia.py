@@ -42,7 +42,7 @@ for uploaded_file in uploaded_files:
     df["cumreturn"]=df.result.cumsum()
     df['name']=uploaded_file.name
     df['resultstr']=df['result'].astype(str)
-    df=df.loc[~df['resultstr'].isin("0")]
+    df=df.loc[~df['resultstr'].isin(0)]
     dfriep=dfriep.append(df)
    
 
