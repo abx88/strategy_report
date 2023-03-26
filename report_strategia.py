@@ -52,6 +52,7 @@ dfriep['cumulativeGLOB']=dfriep.result.cumsum()
 dfriep['year']=dfriep.index.year
 dfriep['month']=dfriep.index.month
 dfriep['pct']=dfriep.result/dfriep.cumulative.shift(1)
+dfriep = dfriep.loc[~dfriep[result].isin(0)]
 
 
 pagina = st.sidebar.radio(
@@ -237,6 +238,7 @@ elif pagina=='Montecarlo':
     if len(uploaded_files) == 0:
         st.text("nessun dato")
     else:
+        
         Costs = 0
         PercentageNoiseAddiction = 0
         OperationsPercentage = 100
@@ -278,7 +280,7 @@ elif pagina=='Montecarlo':
         i = 0
         start = dt.datetime.now()
         while i < NumberOfShuffles:
-            my_permutation = original_operations.sample(frac = fraction).reset_index(drop = True)
+            my_permutation = original_operations.sample(frac = fraction).reset_index(drop = False)
             my_permutation = pd.Series(my_permutation)
             new_equity = my_permutation.cumsum()
             new_drawdown = bt.drawdown(new_equity)
