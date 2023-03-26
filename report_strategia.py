@@ -279,7 +279,7 @@ elif pagina=='Montecarlo':
         i = 0
         start = dt.datetime.now()
         while i < NumberOfShuffles:
-            my_permutation = original_operations.sample(frac = fraction).reset_index(drop = False)
+            my_permutation = original_operations.sample(frac = fraction).reset_index(drop = True)
             my_permutation = pd.Series(my_permutation)
             new_equity = my_permutation.cumsum()
             new_drawdown = bt.drawdown(new_equity)
