@@ -327,30 +327,7 @@ elif pagina=='Montecarlo':
         
 
         
-        # Equity originale
-        montecarlo.add_trace(go.Scatter(x=dfriep.index, y=dfriep['equity'], mode='lines', 
-                                        name='Equity originale', line=dict(color='blue')))
-
-        # Equity migliore
-        best_equity = dfriep.groupby(['year']).max()['equity'].reset_index()
-        best_equity = best_equity.merge(dfriep, on=['year', 'equity'], how='left')
-        montecarlo.add_trace(go.Scatter(x=best_equity.index, y=best_equity['equity'], 
-                                        mode='lines', name='Equity migliore', line=dict(color='green')))
-
-        # Equity peggiore
-        worst_equity = dfriep.groupby(['year']).min()['equity'].reset_index()
-        worst_equity = worst_equity.merge(dfriep, on=['year', 'equity'], how='left')
-        montecarlo.add_trace(go.Scatter(x=worst_equity.index, y=worst_equity['equity'], 
-                                        mode='lines', name='Equity peggiore', line=dict(color='red')))
-
-        # Altre equity
-        other_equity = dfriep[~dfriep.index.isin(best_equity.index) & ~dfriep.index.isin(worst_equity.index)]
-        if not other_equity.empty:
-            montecarlo.add_trace(go.Scatter(x=other_equity.index, y=other_equity['equity'], 
-                                            mode='lines', name='Altre equity', line=dict(color='lightgray')))
-
-        montecarlo.update_layout(title='analisi montecarlo', xaxis_title='Anno', yaxis_title='Equity')
-
+        montecarlo = px.line(matrix_of_equities)
         st.plotly_chart(montecarlo,use_container_width=False )
        
         
