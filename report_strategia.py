@@ -55,7 +55,6 @@ dfriep['month']=dfriep.index.month
 dfriep['pct']=dfriep.result/dfriep.cumulative.shift(1)
 #dfriep = dfriep.loc[~dfriep["result"].isin(0)]
 
-col1, col2 = st.columns([2, 2])
 
 pagina = st.sidebar.radio(
          "funzionalità",
@@ -103,6 +102,7 @@ else:
 
 if pagina=='Riepilogo_equity':
     st.header('Riepilogo equity')
+    col1, col2 = st.columns([2, 2])
     
     uploaded_instrument = st.file_uploader("Inserire strumento per confronto", accept_multiple_files=True)
 
