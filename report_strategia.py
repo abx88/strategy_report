@@ -114,8 +114,8 @@ if pagina=='Riepilogo_equity':
     for uploaded_file in uploaded_instrument:
         instrument = str(uploaded_file.name)
     
-    with expander1:
-        with col1: 
+    #with expander1:
+        with expander1.col1: 
             if len(uploaded_instrument) == 0:
                 st.text("Nessun dato")
 
@@ -168,7 +168,7 @@ if pagina=='Riepilogo_equity':
 
                 st.plotly_chart(equity,use_container_width=False)
 
-        with col2:
+        with expander1.col2:
             pivotAnnoGlob = pd.pivot_table(dfriep, values='result', index=['year'], aggfunc=np.sum)
             st.dataframe(pivotAnnoGlob)
 
