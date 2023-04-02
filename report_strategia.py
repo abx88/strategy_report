@@ -102,10 +102,11 @@ else:
 
 if pagina=='Riepilogo_equity':
     st.header('Riepilogo equity')
-    col1, col2 = st.columns([2, 2])
+    
     
     uploaded_instrument = st.file_uploader("Inserire strumento per confronto", accept_multiple_files=True)
-
+    col1, col2 = st.columns([2, 2])
+    
     for uploaded_file in uploaded_instrument:
         instrument = str(uploaded_file.name)
     
