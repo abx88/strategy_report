@@ -26,7 +26,7 @@ st.set_page_config(
 
 
 st.title('Report strategia')
-col1, col2 = st.columns([2, 2])
+
 
 initial_capital=st.number_input('capitale iniziale',value=10)
 
@@ -55,6 +55,7 @@ dfriep['month']=dfriep.index.month
 dfriep['pct']=dfriep.result/dfriep.cumulative.shift(1)
 #dfriep = dfriep.loc[~dfriep["result"].isin(0)]
 
+col1, col2 = st.columns([2, 2])
 
 pagina = st.sidebar.radio(
          "funzionalità",
