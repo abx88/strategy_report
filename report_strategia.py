@@ -114,117 +114,116 @@ if pagina=='Riepilogo_equity':
     for uploaded_file in uploaded_instrument:
         instrument = str(uploaded_file.name)
     
-    with expander1:
-        with col1: 
-            if len(uploaded_instrument) == 0:
-                st.text("Nessun dato")
+   
+    with col1: 
+        if len(uploaded_instrument) == 0:
+            st.text("Nessun dato")
 
-                equity = go.Figure()
+            equity = go.Figure()
 
-                equity.add_trace(go.Scatter(
-                    mode = "lines",
-                    y = dfriep[start:stop].cumulativeGLOB,
-                    x = dfriep[start:stop].index,
-                    name="equity strategia",
-                    connectgaps=True))
+            equity.add_trace(go.Scatter(
+                mode = "lines",
+                y = dfriep[start:stop].cumulativeGLOB,
+                x = dfriep[start:stop].index,
+                name="equity strategia",
+                connectgaps=True))
 
-                equity.update_xaxes(
-                    title_text = "report strategia",
-                    title_font = {"size": 15},
-                    title_standoff = 10)
-                st.plotly_chart(equity,use_container_width=False )
-
-
-            else:
-
-                new_column_names = ["date","time", "open","high","low","close","volume"]
-                dfinstrument = pd.read_csv(uploaded_instrument[0], delimiter=",", names=new_column_names)
-                dfinstrument.set_index(dfinstrument.date, inplace=True)
-                dfinstrument.index = pd.to_datetime(dfinstrument.index)
-                dfinstrument.sort_index(inplace=True)
-
-                equity = go.Figure()
-                equity.add_trace(go.Scatter(
-                    mode = "lines",
-                    y = dfriep[start:stop].cumulativeGLOB,
-                    x = dfriep[start:stop].index,
-                    name="equity strategia",
-                    connectgaps=True))
-                equity.add_trace(go.Scatter(
-                    mode = "lines",
-                    y = dfinstrument[start:stop].close,
-                    x = dfinstrument[start:stop].index,
-                    name = instrument,
-                    connectgaps=True,
-                    yaxis="y2"))
-                equity.update_xaxes(
-                    title_text = "report strategia",
-                    title_font = {"size": 15},
-                    title_standoff = 10)
-                equity.update_layout(
-                    yaxis2=dict(
-                        overlaying='y',
-                        side='right'))
-
-                st.plotly_chart(equity,use_container_width=False)
-
-        with col2:
-            pivotAnnoGlob = pd.pivot_table(dfriep, values='result', index=['year'], aggfunc=np.sum)
-            st.dataframe(pivotAnnoGlob)
+            equity.update_xaxes(
+                title_text = "report strategia",
+                title_font = {"size": 15},
+                title_standoff = 10)
+            st.plotly_chart(equity,use_container_width=False )
 
 
-    with expander2:
+        else:
 
-        if len(uploaded_files) > 0:
-            with col1:
-                st.subheader("risultati per anno suddivisi per strategie")        
-                reportAnno = px.histogram(dfriep, x="year", y="result",
-                                          color='name', barmode='group',
-                                          height=400)
-                reportAnno.update_xaxes(
-                    title_text = "report per anno",
-                    title_font = {"size": 15},
-                    title_standoff = 10)
-                st.plotly_chart(reportAnno,use_container_width=False )
-            with col2:
-                pivotAnno = pd.pivot_table(dfriep, values='result', index=['year'], columns=['name'], aggfunc=np.sum)
-                st.dataframe(pivotAnno.style.highlight_max(axis=1))
+            new_column_names = ["date","time", "open","high","low","close","volume"]
+            dfinstrument = pd.read_csv(uploaded_instrument[0], delimiter=",", names=new_column_names)
+            dfinstrument.set_index(dfinstrument.date, inplace=True)
+            dfinstrument.index = pd.to_datetime(dfinstrument.index)
+            dfinstrument.sort_index(inplace=True)
+
+            equity = go.Figure()
+            equity.add_trace(go.Scatter(
+                mode = "lines",
+                y = dfriep[start:stop].cumulativeGLOB,
+                x = dfriep[start:stop].index,
+                name="equity strategia",
+                connectgaps=True))
+            equity.add_trace(go.Scatter(
+                mode = "lines",
+                y = dfinstrument[start:stop].close,
+                x = dfinstrument[start:stop].index,
+                name = instrument,
+                connectgaps=True,
+                yaxis="y2"))
+            equity.update_xaxes(
+                title_text = "report strategia",
+                title_font = {"size": 15},
+                title_standoff = 10)
+            equity.update_layout(
+                yaxis2=dict(
+                    overlaying='y',
+                    side='right'))
+
+            st.plotly_chart(equity,use_container_width=False)
+
+    with col2:
+        pivotAnnoGlob = pd.pivot_table(dfriep, values='result', index=['year'], aggfunc=np.sum)
+        st.dataframe(pivotAnnoGlob)
+
+
+    
+    if len(uploaded_files) > 0:
+       
+        st.subheader("risultati per anno suddivisi per strategie")        
+        reportAnno = px.histogram(dfriep, x="year", y="result",
+                                  color='name', barmode='group',
+                                  height=400)
+        reportAnno.update_xaxes(
+            title_text = "report per anno",
+            title_font = {"size": 15},
+            title_standoff = 10)
+        st.plotly_chart(reportAnno,use_container_width=False )
+
+        pivotAnno = pd.pivot_table(dfriep, values='result', index=['year'], columns=['name'], aggfunc=np.sum)
+        st.dataframe(pivotAnno.style.highlight_max(axis=1))
 
 
     if len(uploaded_files) > 0:
-        with col1:
-            st.subheader("risultati cumulativi suddivisi per anno e mese")
-            reportAnnoMese=px.density_heatmap(dfriep, x="month", y="year",z="result", nbinsx=12, nbinsy=20, color_continuous_scale="blues")
+        
+        st.subheader("risultati cumulativi suddivisi per anno e mese")
+        reportAnnoMese=px.density_heatmap(dfriep, x="month", y="year",z="result", nbinsx=12, nbinsy=20, color_continuous_scale="blues")
 
-            reportAnnoMese.update_xaxes(
-                title_text = "report per anno e mese",
-                title_font = {"size": 15},
-                title_standoff = 10)
-            st.plotly_chart(reportAnnoMese,use_container_width=False )
-        with col2:
-            pivotAnnoMese = pd.pivot_table(dfriep, values='result', index=['year'], columns=['month'], aggfunc=np.sum)
+        reportAnnoMese.update_xaxes(
+            title_text = "report per anno e mese",
+            title_font = {"size": 15},
+            title_standoff = 10)
+        st.plotly_chart(reportAnnoMese,use_container_width=False )
 
-            st.dataframe(pivotAnnoMese.style.highlight_max(axis=1))
+        pivotAnnoMese = pd.pivot_table(dfriep, values='result', index=['year'], columns=['month'], aggfunc=np.sum)
+
+        st.dataframe(pivotAnnoMese.style.highlight_max(axis=1))
 
     if len(uploaded_files) > 0:
-        with col1:
-            st.subheader("Equity suddivisa per strategie")       
+        
+        st.subheader("Equity suddivisa per strategie")       
 
-            singole_strat = px.line(dfriep, x=dfriep.index, y='cumreturn', color='name')
-            singole_strat.update_xaxes(
-                title_text = "report strategie divise",
-                title_font = {"size": 15},
-                title_standoff = 10)
-            st.plotly_chart(singole_strat,use_container_width=False )
-        with col2:
-            st.subheader("Scatter risultati strategia")       
+        singole_strat = px.line(dfriep, x=dfriep.index, y='cumreturn', color='name')
+        singole_strat.update_xaxes(
+            title_text = "report strategie divise",
+            title_font = {"size": 15},
+            title_standoff = 10)
+        st.plotly_chart(singole_strat,use_container_width=False )
 
-            distrib_result = px.scatter(dfriep, y=dfriep.result, color='name')
-            distrib_result.update_xaxes(
-                title_text = "scatter distribuzione ritorni",
-                title_font = {"size": 15},
-                title_standoff = 10)
-            st.plotly_chart(distrib_result,use_container_width=False )
+        st.subheader("Scatter risultati strategia")       
+
+        distrib_result = px.scatter(dfriep, y=dfriep.result, color='name')
+        distrib_result.update_xaxes(
+            title_text = "scatter distribuzione ritorni",
+            title_font = {"size": 15},
+            title_standoff = 10)
+        st.plotly_chart(distrib_result,use_container_width=False )
 
     if len(uploaded_files) == 0:
             st.text("nessun dato")
