@@ -173,22 +173,22 @@ if pagina=='Riepilogo_equity':
             st.dataframe(pivotAnnoGlob)
 
 
+    with expander2:
 
-
-    if len(uploaded_files) > 0:
-        with col1:
-            st.subheader("risultati per anno suddivisi per strategie")        
-            reportAnno = px.histogram(dfriep, x="year", y="result",
-                                      color='name', barmode='group',
-                                      height=400)
-            reportAnno.update_xaxes(
-                title_text = "report per anno",
-                title_font = {"size": 15},
-                title_standoff = 10)
-            st.plotly_chart(reportAnno,use_container_width=False )
-        with col2:
-            pivotAnno = pd.pivot_table(dfriep, values='result', index=['year'], columns=['name'], aggfunc=np.sum)
-            st.dataframe(pivotAnno.style.highlight_max(axis=1))
+        if len(uploaded_files) > 0:
+            with col1:
+                st.subheader("risultati per anno suddivisi per strategie")        
+                reportAnno = px.histogram(dfriep, x="year", y="result",
+                                          color='name', barmode='group',
+                                          height=400)
+                reportAnno.update_xaxes(
+                    title_text = "report per anno",
+                    title_font = {"size": 15},
+                    title_standoff = 10)
+                st.plotly_chart(reportAnno,use_container_width=False )
+            with col2:
+                pivotAnno = pd.pivot_table(dfriep, values='result', index=['year'], columns=['name'], aggfunc=np.sum)
+                st.dataframe(pivotAnno.style.highlight_max(axis=1))
 
 
     if len(uploaded_files) > 0:
