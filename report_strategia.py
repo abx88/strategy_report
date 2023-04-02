@@ -187,38 +187,40 @@ if pagina=='Riepilogo_equity':
 
 
     if len(uploaded_files) > 0:
-        st.subheader("risultati cumulativi suddivisi per anno e mese")
-        reportAnnoMese=px.density_heatmap(dfriep, x="month", y="year",z="result", nbinsx=12, nbinsy=20, color_continuous_scale="blues")
+        with col1:
+            st.subheader("risultati cumulativi suddivisi per anno e mese")
+            reportAnnoMese=px.density_heatmap(dfriep, x="month", y="year",z="result", nbinsx=12, nbinsy=20, color_continuous_scale="blues")
 
-        reportAnnoMese.update_xaxes(
-            title_text = "report per anno e mese",
-            title_font = {"size": 15},
-            title_standoff = 10)
-        st.plotly_chart(reportAnnoMese,use_container_width=False )
+            reportAnnoMese.update_xaxes(
+                title_text = "report per anno e mese",
+                title_font = {"size": 15},
+                title_standoff = 10)
+            st.plotly_chart(reportAnnoMese,use_container_width=False )
+        with col2:
+            pivotAnnoMese = pd.pivot_table(dfriep, values='result', index=['year'], columns=['month'], aggfunc=np.sum)
 
-        pivotAnnoMese = pd.pivot_table(dfriep, values='result', index=['year'], columns=['month'], aggfunc=np.sum)
+            st.dataframe(pivotAnnoMese.style.highlight_max(axis=1))
 
-        st.dataframe(pivotAnnoMese.style.highlight_max(axis=1))
+    if len(uploaded_files) > 0:
+        with col1:
+            st.subheader("Equity suddivisa per strategie")       
 
+            singole_strat = px.line(dfriep, x=dfriep.index, y='cumreturn', color='name')
+            singole_strat.update_xaxes(
+                title_text = "report strategie divise",
+                title_font = {"size": 15},
+                title_standoff = 10)
+            st.plotly_chart(singole_strat,use_container_width=False )
+        with col2:
+            st.subheader("Scatter risultati strategia")       
 
-    
-    st.subheader("Equity suddivisa per strategie")       
-    
-    singole_strat = px.line(dfriep, x=dfriep.index, y='cumreturn', color='name')
-    singole_strat.update_xaxes(
-        title_text = "report strategie divise",
-        title_font = {"size": 15},
-        title_standoff = 10)
-    st.plotly_chart(singole_strat,use_container_width=False )
-    
-    st.subheader("Scatter risultati strategia")       
-    
-    distrib_result = px.scatter(dfriep, y=dfriep.result, color='name')
-    distrib_result.update_xaxes(
-        title_text = "scatter distribuzione ritorni",
-        title_font = {"size": 15},
-        title_standoff = 10)
-    st.plotly_chart(distrib_result,use_container_width=False )
+            distrib_result = px.scatter(dfriep, y=dfriep.result, color='name')
+            distrib_result.update_xaxes(
+                title_text = "scatter distribuzione ritorni",
+                title_font = {"size": 15},
+                title_standoff = 10)
+            st.plotly_chart(distrib_result,use_container_width=False )
+
     if len(uploaded_files) == 0:
             st.text("nessun dato")
     else:
