@@ -163,7 +163,7 @@ if pagina=='Riepilogo_equity':
 
             st.plotly_chart(equity,use_container_width=False)
 
-    with col2:
+  
 
         if len(uploaded_files) > 0:
             st.subheader("risultati per anno suddivisi per strategie")        
@@ -179,20 +179,20 @@ if pagina=='Riepilogo_equity':
             pivotAnno = pd.pivot_table(dfriep, values='result', index=['year'], columns=['name'], aggfunc=np.sum)
             st.dataframe(pivotAnno.style.highlight_max(axis=1))
 
-    
-    if len(uploaded_files) > 0:
-        st.subheader("risultati cumulativi suddivisi per anno e mese")
-        reportAnnoMese=px.density_heatmap(dfriep, x="month", y="year",z="result", nbinsx=12, nbinsy=20, color_continuous_scale="blues")
+    with col2:
+        if len(uploaded_files) > 0:
+            st.subheader("risultati cumulativi suddivisi per anno e mese")
+            reportAnnoMese=px.density_heatmap(dfriep, x="month", y="year",z="result", nbinsx=12, nbinsy=20, color_continuous_scale="blues")
 
-        reportAnnoMese.update_xaxes(
-            title_text = "report per anno e mese",
-            title_font = {"size": 15},
-            title_standoff = 10)
-        st.plotly_chart(reportAnnoMese,use_container_width=False )
-        
-        pivotAnnoMese = pd.pivot_table(dfriep, values='result', index=['year'], columns=['month'], aggfunc=np.sum)
-       
-        st.dataframe(pivotAnnoMese.style.highlight_max(axis=1))
+            reportAnnoMese.update_xaxes(
+                title_text = "report per anno e mese",
+                title_font = {"size": 15},
+                title_standoff = 10)
+            st.plotly_chart(reportAnnoMese,use_container_width=False )
+
+            pivotAnnoMese = pd.pivot_table(dfriep, values='result', index=['year'], columns=['month'], aggfunc=np.sum)
+
+            st.dataframe(pivotAnnoMese.style.highlight_max(axis=1))
 
 
     
