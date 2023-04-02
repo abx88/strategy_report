@@ -110,58 +110,58 @@ if pagina=='Riepilogo_equity':
         instrument = str(uploaded_file.name)
     
    
-        
-    if len(uploaded_instrument) == 0:
-        st.text("Nessun dato")
+    with col1: 
+        if len(uploaded_instrument) == 0:
+            st.text("Nessun dato")
 
-        equity = go.Figure()
+            equity = go.Figure()
 
-        equity.add_trace(go.Scatter(
-            mode = "lines",
-            y = dfriep[start:stop].cumulativeGLOB,
-            x = dfriep[start:stop].index,
-            name="equity strategia",
-            connectgaps=True))
+            equity.add_trace(go.Scatter(
+                mode = "lines",
+                y = dfriep[start:stop].cumulativeGLOB,
+                x = dfriep[start:stop].index,
+                name="equity strategia",
+                connectgaps=True))
 
-        equity.update_xaxes(
-            title_text = "report strategia",
-            title_font = {"size": 15},
-            title_standoff = 10)
-        st.plotly_chart(equity,use_container_width=False )
+            equity.update_xaxes(
+                title_text = "report strategia",
+                title_font = {"size": 15},
+                title_standoff = 10)
+            st.plotly_chart(equity,use_container_width=False )
 
 
-    else:
+        else:
 
-        new_column_names = ["date","time", "open","high","low","close","volume"]
-        dfinstrument = pd.read_csv(uploaded_instrument[0], delimiter=",", names=new_column_names)
-        dfinstrument.set_index(dfinstrument.date, inplace=True)
-        dfinstrument.index = pd.to_datetime(dfinstrument.index)
-        dfinstrument.sort_index(inplace=True)
+            new_column_names = ["date","time", "open","high","low","close","volume"]
+            dfinstrument = pd.read_csv(uploaded_instrument[0], delimiter=",", names=new_column_names)
+            dfinstrument.set_index(dfinstrument.date, inplace=True)
+            dfinstrument.index = pd.to_datetime(dfinstrument.index)
+            dfinstrument.sort_index(inplace=True)
 
-        equity = go.Figure()
-        equity.add_trace(go.Scatter(
-            mode = "lines",
-            y = dfriep[start:stop].cumulativeGLOB,
-            x = dfriep[start:stop].index,
-            name="equity strategia",
-            connectgaps=True))
-        equity.add_trace(go.Scatter(
-            mode = "lines",
-            y = dfinstrument[start:stop].close,
-            x = dfinstrument[start:stop].index,
-            name = instrument,
-            connectgaps=True,
-            yaxis="y2"))
-        equity.update_xaxes(
-            title_text = "report strategia",
-            title_font = {"size": 15},
-            title_standoff = 10)
-        equity.update_layout(
-            yaxis2=dict(
-                overlaying='y',
-                side='right'))
+            equity = go.Figure()
+            equity.add_trace(go.Scatter(
+                mode = "lines",
+                y = dfriep[start:stop].cumulativeGLOB,
+                x = dfriep[start:stop].index,
+                name="equity strategia",
+                connectgaps=True))
+            equity.add_trace(go.Scatter(
+                mode = "lines",
+                y = dfinstrument[start:stop].close,
+                x = dfinstrument[start:stop].index,
+                name = instrument,
+                connectgaps=True,
+                yaxis="y2"))
+            equity.update_xaxes(
+                title_text = "report strategia",
+                title_font = {"size": 15},
+                title_standoff = 10)
+            equity.update_layout(
+                yaxis2=dict(
+                    overlaying='y',
+                    side='right'))
 
-        st.plotly_chart(equity,use_container_width=False)
+            st.plotly_chart(equity,use_container_width=False)
 
 
 
