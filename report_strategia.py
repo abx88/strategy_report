@@ -164,8 +164,8 @@ if pagina=='Riepilogo_equity':
             st.plotly_chart(equity,use_container_width=False)
  
     with col2:
-        pivotAnnoglob = pd.pivot_table(dfriep, values='result', index=['year'], aggfunc=np.sum)
-        st.dataframe(pivotAnno)
+        pivotAnnoGlob = pd.pivot_table(dfriep, values='result', index=['year'], aggfunc=np.sum)
+        st.dataframe(pivotAnnoGlob)
 
 
 
