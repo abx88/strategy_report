@@ -103,6 +103,10 @@ else:
 if pagina=='Riepilogo_equity':
     st.header('Riepilogo equity')
     
+    expander1 = st.expander("equity totale")
+    expander2 = st.expander("riepilogo totale")
+    expander3 = st.expander("equity per mese")
+    expander4 = st.expander("equity per strategia")
     
     uploaded_instrument = st.file_uploader("Inserire strumento per confronto", accept_multiple_files=True)
     col1, col2 = st.columns([2, 2])
@@ -110,63 +114,63 @@ if pagina=='Riepilogo_equity':
     for uploaded_file in uploaded_instrument:
         instrument = str(uploaded_file.name)
     
-   
-    with col1: 
-        if len(uploaded_instrument) == 0:
-            st.text("Nessun dato")
+    with expander1:
+        with col1: 
+            if len(uploaded_instrument) == 0:
+                st.text("Nessun dato")
 
-            equity = go.Figure()
+                equity = go.Figure()
 
-            equity.add_trace(go.Scatter(
-                mode = "lines",
-                y = dfriep[start:stop].cumulativeGLOB,
-                x = dfriep[start:stop].index,
-                name="equity strategia",
-                connectgaps=True))
+                equity.add_trace(go.Scatter(
+                    mode = "lines",
+                    y = dfriep[start:stop].cumulativeGLOB,
+                    x = dfriep[start:stop].index,
+                    name="equity strategia",
+                    connectgaps=True))
 
-            equity.update_xaxes(
-                title_text = "report strategia",
-                title_font = {"size": 15},
-                title_standoff = 10)
-            st.plotly_chart(equity,use_container_width=False )
+                equity.update_xaxes(
+                    title_text = "report strategia",
+                    title_font = {"size": 15},
+                    title_standoff = 10)
+                st.plotly_chart(equity,use_container_width=False )
 
 
-        else:
+            else:
 
-            new_column_names = ["date","time", "open","high","low","close","volume"]
-            dfinstrument = pd.read_csv(uploaded_instrument[0], delimiter=",", names=new_column_names)
-            dfinstrument.set_index(dfinstrument.date, inplace=True)
-            dfinstrument.index = pd.to_datetime(dfinstrument.index)
-            dfinstrument.sort_index(inplace=True)
+                new_column_names = ["date","time", "open","high","low","close","volume"]
+                dfinstrument = pd.read_csv(uploaded_instrument[0], delimiter=",", names=new_column_names)
+                dfinstrument.set_index(dfinstrument.date, inplace=True)
+                dfinstrument.index = pd.to_datetime(dfinstrument.index)
+                dfinstrument.sort_index(inplace=True)
 
-            equity = go.Figure()
-            equity.add_trace(go.Scatter(
-                mode = "lines",
-                y = dfriep[start:stop].cumulativeGLOB,
-                x = dfriep[start:stop].index,
-                name="equity strategia",
-                connectgaps=True))
-            equity.add_trace(go.Scatter(
-                mode = "lines",
-                y = dfinstrument[start:stop].close,
-                x = dfinstrument[start:stop].index,
-                name = instrument,
-                connectgaps=True,
-                yaxis="y2"))
-            equity.update_xaxes(
-                title_text = "report strategia",
-                title_font = {"size": 15},
-                title_standoff = 10)
-            equity.update_layout(
-                yaxis2=dict(
-                    overlaying='y',
-                    side='right'))
+                equity = go.Figure()
+                equity.add_trace(go.Scatter(
+                    mode = "lines",
+                    y = dfriep[start:stop].cumulativeGLOB,
+                    x = dfriep[start:stop].index,
+                    name="equity strategia",
+                    connectgaps=True))
+                equity.add_trace(go.Scatter(
+                    mode = "lines",
+                    y = dfinstrument[start:stop].close,
+                    x = dfinstrument[start:stop].index,
+                    name = instrument,
+                    connectgaps=True,
+                    yaxis="y2"))
+                equity.update_xaxes(
+                    title_text = "report strategia",
+                    title_font = {"size": 15},
+                    title_standoff = 10)
+                equity.update_layout(
+                    yaxis2=dict(
+                        overlaying='y',
+                        side='right'))
 
-            st.plotly_chart(equity,use_container_width=False)
- 
-    with col2:
-        pivotAnnoGlob = pd.pivot_table(dfriep, values='result', index=['year'], aggfunc=np.sum)
-        st.dataframe(pivotAnnoGlob)
+                st.plotly_chart(equity,use_container_width=False)
+
+        with col2:
+            pivotAnnoGlob = pd.pivot_table(dfriep, values='result', index=['year'], aggfunc=np.sum)
+            st.dataframe(pivotAnnoGlob)
 
 
 
