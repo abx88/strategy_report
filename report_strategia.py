@@ -19,6 +19,7 @@ from plotly import __version__
 print("Plotly version: ",__version__)
 import os
 
+
 st.set_page_config(
     page_title="StrategyReportAB",
     layout="wide",
@@ -44,8 +45,7 @@ for uploaded_file in uploaded_files:
     df['name']=uploaded_file.name
     df=df.loc[df["result"] != 0]
     dfriep=dfriep.append(df)
-
-
+   
 
 dfriep.set_index(dfriep.date_time, inplace=True)
 dfriep.index = pd.to_datetime(dfriep.index)
@@ -410,7 +410,6 @@ else:
         result2=dfcorr[dfcorr.result!=0].result
         st.text("average trade: " + str(bt.avg_trade(result2)))   
         st.text("Max Closed Draw Down: "+ str(bt.max_draw_down(dfcorr.cumulativeGLOB)))
-        
         
 
 
