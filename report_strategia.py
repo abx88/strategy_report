@@ -44,7 +44,8 @@ for uploaded_file in uploaded_files:
     df['name']=uploaded_file.name
     df=df.loc[df["result"] != 0]
     dfriep=dfriep.append(df)
-   
+
+
 
 dfriep.set_index(dfriep.date_time, inplace=True)
 dfriep.index = pd.to_datetime(dfriep.index)
